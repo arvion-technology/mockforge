@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>MockForge — turn an OpenAPI spec into a stateful mock API</title>
+  <meta name="description" content="A browser playground for MockForge: paste an OpenAPI 3 document, inspect generated routes, run requests with validation, latency and failure injection, and read the request recorder." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b0f1a'/><text x='16' y='22' font-family='sans-serif' font-size='16' font-weight='700' fill='%23f5c26b' text-anchor='middle'>A</text></svg>" />
+  <link rel="stylesheet" href="arvion.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="aurora"></div>
+  <div class="grid-lines"></div>
+
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark">A</span>
+        <span>
+          <span class="brand-word">ARVION <b>/</b> MOCKFORGE</span>
+          <span class="brand-sub" style="display:block">OpenAPI to stateful mock</span>
+        </span>
+      </a>
+      <span class="spacer"></span>
+      <div class="tabs" id="view-tabs" role="tablist" aria-label="Demo views">
+        <button class="tab active" data-view="playground" role="tab">Playground</button>
+        <button class="tab" data-view="traffic" role="tab">Traffic</button>
+      </div>
+      <span class="badge green"><span class="dot pulse"></span> local only</span>
+      <a class="btn sm" href="https://github.com/arvion-technology/mockforge" target="_blank" rel="noopener">GitHub ↗</a>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Developer tools / API</div>
+          <h1>MockForge</h1>
+          <p class="lede">Paste an OpenAPI 3 document and get a working API: seeded fixtures, validation, in-memory CRUD, latency and failure injection, plus a request recorder.</p>
+        </div>
+        <span class="spacer"></span>
+        <div class="row">
+          <span class="badge mono" id="spec-badge">OpenAPI —</span>
+          <button class="btn sm" id="reset-store">Reset store</button>
+        </div>
+      </div>
+
+      <section data-view-panel="playground">
+        <div class="grid forge-grid">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">OpenAPI document</div>
+                <div class="card-sub">Edit the spec — routes rebuild as you type</div>
+              </div>
+              <span class="spacer"></span>
+              <span class="badge" id="spec-meta">—</span>
+            </div>
+            <div class="chips" id="sample-chips"></div>
+            <textarea class="textarea spec-editor" id="spec-editor" spellcheck="false" aria-label="OpenAPI document"></textarea>
+            <div class="row mt-1">
+              <span class="small muted" id="parse-status">Loading spec…</span>
+              <span class="spacer"></span>
+              <span class="small muted mono" id="parse-ms"></span>
+            </div>
+            <div class="error-box hide" id="parse-error"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Generated endpoints</div>
+                <div class="card-sub" id="routes-sub">—</div>
+              </div>
+              <span class="spacer"></span>
+              <span class="badge gold" id="route-count">—</span>
+            </div>
+            <div class="route-list" id="route-list"></div>
+            <div class="divider"></div>
+            <div class="card-head" style="margin-bottom:8px">
+              <div class="card-title" style="font-size:13px">Scenario</div>
+              <span class="spacer"></span>
+              <span class="small muted">applied to every request</span>
+            </div>
+            <div class="scenario-grid">
+              <label class="field">Latency <span class="mono scenario-value" id="latency-value">90 ms</span>
+                <input type="range" id="latency" min="0" max="500" step="10" value="90" aria-label="Simulated latency" />
+              </label>
+              <label class="field">Error rate <span class="mono scenario-value" id="error-value">0%</span>
+                <input type="range" id="error-rate" min="0" max="50" step="1" value="0" aria-label="Error injection rate" />
+              </label>
+              <label class="field">Seed
+                <input class="input" id="seed" type="number" value="7" min="1" max="9999" aria-label="Fixture seed" />
+              </label>
+            </div>
+            <div class="chips mt-2" id="store-chips"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Request runner</div>
+                <div class="card-sub">Executes against the in-page server — nothing leaves the browser</div>
+              </div>
+              <span class="spacer"></span>
+              <span class="badge" id="last-status">idle</span>
+            </div>
+            <div class="runner-bar">
+              <select class="select" id="req-method" aria-label="HTTP method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PATCH</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+              </select>
+              <input class="input mono" id="req-path" value="/tasks?limit=3" spellcheck="false" aria-label="Request path" />
+              <button class="btn primary" id="send">Send</button>
+            </div>
+            <div class="hide" id="body-wrap">
+              <textarea class="textarea body-editor" id="req-body" spellcheck="false" aria-label="Request body"></textarea>
+            </div>
+            <div class="response-head">
+              <span class="small muted">Response</span>
+              <span class="spacer"></span>
+              <span class="mono small muted" id="resp-meta">—</span>
+            </div>
+            <pre class="code response" id="response">Send a request to begin.</pre>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Traffic</div>
+                <div class="card-sub">Newest first, including injected failures</div>
+              </div>
+              <span class="spacer"></span>
+              <button class="btn sm ghost" id="open-traffic">All requests →</button>
+            </div>
+            <div id="mini-recorder"></div>
+          </div>
+        </div>
+      </section>
+
+      <section data-view-panel="traffic" hidden>
+        <div class="grid grid-4" id="traffic-stats" style="margin-bottom:16px"></div>
+        <div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
+          <div class="card pad-sm" style="padding:0">
+            <div id="traffic-table"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Request detail</div><span class="spacer"></span><span class="small muted" id="detail-id">—</span></div>
+            <div id="request-detail" class="col"><div class="empty"><strong>No request selected</strong>Click a row in the recording table.</div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="demo-banner">
+    <span class="brand-mark" style="width:20px;height:20px;font-size:10px;border-radius:6px">A</span>
+    <span>Arvion Labs</span>
+    <span class="sep"></span>
+    <a href="https://arvion-technology.github.io/labs/">All projects</a>
+    <span class="sep"></span>
+    <a href="https://github.com/arvion-technology/mockforge" target="_blank" rel="noopener">source</a>
+  </div>
+
+  <script src="arvion.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
