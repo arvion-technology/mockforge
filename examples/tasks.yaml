@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: Task Tracker API
+  version: 1.2.0
+  description: A small task-tracking API used to exercise MockForge.
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /tasks:
+    get:
+      summary: List tasks
+      operationId: listTasks
+      tags: [tasks]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [todo, in_progress, done]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+      responses:
+        "200":
+          description: All tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      summary: Create a task
+      operationId: createTask
+      tags: [tasks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Created task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /tasks/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get one task
+      operationId: getTask
+      tags: [tasks]
+      responses:
+        "200":
+          description: The task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Missing
+    patch:
+      summary: Update a task
+      operationId: updateTask
+      tags: [tasks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Updated task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+    delete:
+      summary: Delete a task
+      operationId: deleteTask
+      tags: [tasks]
+      responses:
+        "204":
+          description: Deleted
+components:
+  schemas:
+    Task:
+      type: object
+      required: [id, title, status, priority, createdAt]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          minLength: 3
+          maxLength: 80
+        description:
+          type: string
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 5
+        assignee:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          maxItems: 5
+        estimateHours:
+          type: number
+          minimum: 0
+          maximum: 40
+        createdAt:
+          type: string
+          format: date-time
+    TaskInput:
+      type: object
+      required: [title]
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 80
+        description:
+          type: string
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 5
+        assignee:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 80
+        description:
+          type: string
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 5
+        assignee:
+          type: string
+          nullable: true
