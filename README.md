@@ -2,7 +2,7 @@
 <img src="docs/demo.gif" alt="MockForge playground: OpenAPI document on the left, generated endpoints in the middle, request runner and traffic below" width="100%" />
 </div>
 
-<sub>Recorded from the live demo — <a href="docs/demo.mp4">MP4</a> · <a href="docs/screenshot.png">static frame</a></sub>
+<sub>Recorded from the live demo, <a href="docs/demo.mp4">MP4</a> · <a href="docs/screenshot.png">static frame</a></sub>
 
 # MockForge
 
@@ -23,22 +23,22 @@ The server, the CLI and the browser playground all run the same modules in
 
 ## What it does
 
-- **Serves a spec** — `mockforge serve examples/tasks.yaml --port 4010` starts a
+- **Serves a spec**: `mockforge serve examples/tasks.yaml --port 4010` starts a
   real HTTP server with CORS enabled and logs the generated routes.
-- **Loads YAML or JSON OpenAPI 3** — a small parser in `src/yaml.js` covers the
+- **Loads YAML or JSON OpenAPI 3**: a small parser in `src/yaml.js` covers the
   subset OpenAPI needs, including flow collections and block strings.
-- **Resolves local `$ref`s** — `#/components/schemas/Task` is inlined once and
+- **Resolves local `$ref`s**: `#/components/schemas/Task` is inlined once and
   cached; circular schemas are marked instead of expanded forever.
-- **Generates seeded fixtures** — the same seed returns byte-identical data, so
+- **Generates seeded fixtures**: the same seed returns byte-identical data, so
   a failing front-end test fails for the same reason twice.
-- **Validates requests** — path parameters are coerced, query parameters are
+- **Validates requests**: path parameters are coerced, query parameters are
   checked against their declared types and enums, and request bodies are
   validated against the JSON Schema with every error reported at once.
-- **Keeps state** — POST inserts into the in-memory store, GET by id reads it,
+- **Keeps state**: POST inserts into the in-memory store, GET by id reads it,
   PATCH merges, DELETE returns 204 and the next GET returns 404.
-- **Injects conditions** — per-request latency with jitter, a configurable 500
+- **Injects conditions**: per-request latency with jitter, a configurable 500
   error rate, and a rate-limit window.
-- **Records traffic** — the last 200 requests with status, duration, query,
+- **Records traffic**: the last 200 requests with status, duration, query,
   body and response, shown in the demo's Traffic view.
 
 ## Screenshots
@@ -116,7 +116,7 @@ generated value hashes a seed string such as `tasks#3/title` and builds its own
 the values of the properties around it, and two runs with seed 7 produce the
 same `Task` list. `src/fake.js` also reads the field name, so `email` gets a
 valid email, `createdAt` gets an RFC 3339 timestamp, and `priority` respects the
-schema's 1–5 bounds.
+schema's 1-5 bounds.
 
 **Validation reports everything in one pass.** `validate` returns an array of
 `{ path, message }` entries rooted at `$` (`$.title`, `query.limit`,
@@ -151,7 +151,7 @@ resolves and that no placeholder text ships in the page.
 
 The mock is not a proxy and does not call a real backend. The YAML subset is
 smaller than a full YAML parser: no anchors/aliases, and blank lines inside
-block strings are collapsed — good enough for OpenAPI documents, not for
+block strings are collapsed, good enough for OpenAPI documents, not for
 arbitrary configuration. Only local `$ref`s resolve, because a mock that needs
 the network defeats the point. Request bodies are validated but responses are
 not validated against their schema, and the store is a `Map` that disappears

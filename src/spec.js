@@ -82,7 +82,7 @@ export function resolvePointer(root, pointer) {
  * Circular schemas are real (a comment with replies) so rather than throw we
  * leave a `{ $ref, circular: true }` marker at the point the cycle closes.
  * Validators and the fake generator treat that marker as "unknown", and the
- * recorded request shows it — silently expanding forever would not.
+ * recorded request shows it, silently expanding forever would not.
  */
 export function createResolver(root) {
   const cache = new Map();

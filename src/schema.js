@@ -160,7 +160,7 @@ function walk(value, schema, path, errors, resolver, depth) {
 
 /**
  * Coerce a URL/query string into the schema's declared type. Returns
- * `{ ok, value }` or `{ ok: false, message }` — never throws.
+ * `{ ok, value }` or `{ ok: false, message }`, never throws.
  */
 export function coerce(value, schema, resolver) {
   const shape = resolveSchema(schema, resolver) || {};

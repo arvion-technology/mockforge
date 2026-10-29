@@ -3,7 +3,7 @@
 // The hard requirement for a mock server is reproducibility: the same spec and
 // seed must produce the same fixture on every run, so a failing front-end test
 // stays failing (or fixed) for the same reason. Every value therefore derives
-// its RNG from a hash of the logical path, never from a shared stream — adding
+// its RNG from a hash of the logical path, never from a shared stream, adding
 // one field does not shuffle everything after it.
 
 const FIRST = ["Maya", "Nima", "Aarav", "Sita", "Rohan", "Priya", "Kiran", "Anisha", "Bikash", "Lena", "Tenzin", "Meera"];

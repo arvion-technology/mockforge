@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// MockForge CLI — `mockforge serve spec.yaml` starts the stateful mock.
+// MockForge CLI, `mockforge serve spec.yaml` starts the stateful mock.
 //
 // The HTTP layer is deliberately thin: it only translates between Node's
 // IncomingMessage and the plain request/response objects the core understands.
@@ -9,7 +9,7 @@ import { parseSpec, specInfo } from "../src/spec.js";
 import { createMockForge } from "../src/server.js";
 import { describeRoute } from "../src/router.js";
 
-const USAGE = `mockforge — serve a stateful mock API from an OpenAPI 3 document
+const USAGE = `mockforge, serve a stateful mock API from an OpenAPI 3 document
 
 Usage
   mockforge serve <spec.yaml> [options]
@@ -79,7 +79,7 @@ function printRoutes(spec, log = console.log) {
 function listCommand(file) {
   const spec = loadSpec(file);
   const info = specInfo(spec);
-  console.log(`${info.title} ${info.version ? "v" + info.version : ""} — ${info.openapi}, ${info.pathCount} paths`);
+  console.log(`${info.title} ${info.version ? "v" + info.version : ""}, ${info.openapi}, ${info.pathCount} paths`);
   printRoutes(spec);
 }
 
@@ -132,7 +132,7 @@ async function serveCommand(file, flags) {
   });
 
   if (!flags.quiet) {
-    console.log(`${info.title} — mock serving ${forge.routes.length} routes`);
+    console.log(`${info.title}, mock serving ${forge.routes.length} routes`);
     printRoutes(spec);
   }
   console.log(`mockforge listening on http://localhost:${port}`);

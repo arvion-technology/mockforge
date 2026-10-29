@@ -1,7 +1,7 @@
 // MockForge demo application.
 //
 // The server, the spec parser, the validator and the fake-data generator are
-// all imported from ../src — this file only moves request objects between the
+// all imported from ../src, this file only moves request objects between the
 // DOM and that library. Nothing here sends a network request.
 import { parseSpec, specInfo } from "../src/spec.js";
 import { createMockForge } from "../src/server.js";
@@ -47,7 +47,7 @@ function showParseError(message) {
   const box = $("#parse-error");
   box.textContent = message;
   box.classList.remove("hide");
-  $("#parse-status").textContent = "Spec could not be parsed — the previous server is still running";
+  $("#parse-status").textContent = "Spec could not be parsed, the previous server is still running";
   $("#parse-status").style.color = "var(--red)";
 }
 
@@ -80,7 +80,7 @@ function reloadSpec({ prime = false } = {}) {
   $("#spec-meta").className = "badge gold";
   $("#parse-status").textContent = `Parsed ${state.forge.routes.length} operations from ${info.pathCount} paths`;
   $("#parse-ms").textContent = `${elapsed.toFixed(1)} ms`;
-  $("#routes-sub").textContent = `${info.title} — click a route to load it into the runner`;
+  $("#routes-sub").textContent = `${info.title}, click a route to load it into the runner`;
   $("#route-count").textContent = `${state.forge.routes.length} operations`;
   renderRoutes();
   renderStoreChips();
@@ -139,7 +139,7 @@ function renderStoreChips() {
   const resources = state.forge.store.stats();
   const chips = resources.length
     ? resources.map((entry) => el("span", { class: "chip" }, el("span", { text: entry.name }), el("span", { class: "mono", text: String(entry.count) })))
-    : [el("span", { class: "small muted", text: "Store is empty — send a POST to create a record" })];
+    : [el("span", { class: "small muted", text: "Store is empty, send a POST to create a record" })];
   $("#store-chips").replaceChildren(...chips);
 }
 
@@ -242,7 +242,7 @@ function renderTraffic() {
   const stats = trafficStats();
   $("#traffic-stats").replaceChildren(
     statCard("Recorded requests", String(stats.total), "capped at the last 200"),
-    statCard("Successful", stats.total ? fmt.pct(stats.successes / stats.total, 0) : "—", "status below 400", "green"),
+    statCard("Successful", stats.total ? fmt.pct(stats.successes / stats.total, 0) : ", ", "status below 400", "green"),
     statCard("Injected failures", String(stats.injected), "errors the scenario forced", stats.injected ? "gold" : ""),
     statCard("Mean duration", `${stats.average} ms`, "wall clock, simulation included", "blue"),
   );
@@ -348,7 +348,7 @@ function bindEvents() {
     state.selectedRequest = null;
     renderStoreChips();
     renderRecorder();
-    toast("Store reset — fixtures regenerate on the next request", "success");
+    toast("Store reset, fixtures regenerate on the next request", "success");
   });
   $("#open-traffic").addEventListener("click", () => setView("traffic"));
   $("#latency").addEventListener("input", (event) => {

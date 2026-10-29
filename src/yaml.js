@@ -4,7 +4,7 @@
 // in a YAML library this implements the subset an OpenAPI file actually uses:
 // block mappings and sequences, flow maps/arrays, quoted and plain scalars,
 // comments and literal/folded block strings. Anchors, aliases, tags and
-// multi-document streams are intentionally unsupported — the loader errors on
+// multi-document streams are intentionally unsupported, the loader errors on
 // anything it does not understand instead of guessing.
 //
 // The parser is indentation driven. `parseNode` receives the exact indentation

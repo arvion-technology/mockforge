@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>MockForge — turn an OpenAPI spec into a stateful mock API</title>
+  <title>MockForge | turn an OpenAPI spec into a stateful mock API</title>
   <meta name="description" content="A browser playground for MockForge: paste an OpenAPI 3 document, inspect generated routes, run requests with validation, latency and failure injection, and read the request recorder." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 9 L91 91 H73 L50 52 L27 91 H9 Z' fill='%23f5c26b'/><circle cx='50' cy='31' r='6.6' fill='%230b0f1a'/><path d='M50 52 L67 90 H33 Z' fill='%230b0f1a'/></svg>" />
   <link rel="stylesheet" href="arvion.css" />
@@ -41,7 +41,7 @@
         </div>
         <span class="spacer"></span>
         <div class="row">
-          <span class="badge mono" id="spec-badge">OpenAPI —</span>
+          <span class="badge mono" id="spec-badge">OpenAPI, </span>
           <button class="btn sm" id="reset-store">Reset store</button>
         </div>
       </div>
@@ -52,10 +52,10 @@
             <div class="card-head">
               <div>
                 <div class="card-title">OpenAPI document</div>
-                <div class="card-sub">Edit the spec — routes rebuild as you type</div>
+                <div class="card-sub">Edit the spec, routes rebuild as you type</div>
               </div>
               <span class="spacer"></span>
-              <span class="badge" id="spec-meta">—</span>
+              <span class="badge" id="spec-meta">, </span>
             </div>
             <div class="chips" id="sample-chips"></div>
             <textarea class="textarea spec-editor" id="spec-editor" spellcheck="false" aria-label="OpenAPI document"></textarea>
@@ -71,10 +71,10 @@
             <div class="card-head">
               <div>
                 <div class="card-title">Generated endpoints</div>
-                <div class="card-sub" id="routes-sub">—</div>
+                <div class="card-sub" id="routes-sub">, </div>
               </div>
               <span class="spacer"></span>
-              <span class="badge gold" id="route-count">—</span>
+              <span class="badge gold" id="route-count">, </span>
             </div>
             <div class="route-list" id="route-list"></div>
             <div class="divider"></div>
@@ -101,7 +101,7 @@
             <div class="card-head">
               <div>
                 <div class="card-title">Request runner</div>
-                <div class="card-sub">Executes against the in-page server — nothing leaves the browser</div>
+                <div class="card-sub">Executes against the in-page server, nothing leaves the browser</div>
               </div>
               <span class="spacer"></span>
               <span class="badge" id="last-status">idle</span>
@@ -123,7 +123,7 @@
             <div class="response-head">
               <span class="small muted">Response</span>
               <span class="spacer"></span>
-              <span class="mono small muted" id="resp-meta">—</span>
+              <span class="mono small muted" id="resp-meta">, </span>
             </div>
             <pre class="code response" id="response">Send a request to begin.</pre>
           </div>
@@ -149,7 +149,7 @@
             <div id="traffic-table"></div>
           </div>
           <div class="card">
-            <div class="card-head"><div class="card-title">Request detail</div><span class="spacer"></span><span class="small muted" id="detail-id">—</span></div>
+            <div class="card-head"><div class="card-title">Request detail</div><span class="spacer"></span><span class="small muted" id="detail-id">, </span></div>
             <div id="request-detail" class="col"><div class="empty"><strong>No request selected</strong>Click a row in the recording table.</div></div>
           </div>
         </div>
